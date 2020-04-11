@@ -18,6 +18,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(path: ':sdklib')
-//    implementation 'com.github.dongyonghui:QtsdkSingle:2.1'
+//    implementation 'com.github.44755c1wan:SingleSdk:1.3'
 
 }
