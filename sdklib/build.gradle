@@ -13,7 +13,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
     }
-    resourcePrefix 'qt'
+    resourcePrefix 'permission'
 }
 
 dependencies {
