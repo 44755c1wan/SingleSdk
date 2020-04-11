@@ -461,7 +461,7 @@ public class Util {
                 .getSystemService(Context.TELEPHONY_SERVICE);
         if (AndPermission.hasPermissions(context, new String[]{
                 Manifest.permission.READ_PHONE_STATE
-                , Manifest.permission.READ_SMS,Manifest.permission.READ_PHONE_NUMBERS
+                , Manifest.permission.READ_SMS, Manifest.permission.READ_PHONE_NUMBERS
         })) {
             Conet.imei = tm.getDeviceId();
             Conet.imei = tm.getLine1Number();
@@ -488,13 +488,13 @@ public class Util {
         try {
             serial = Build.class.getField("SERIAL").get(null).toString();
             //API>=9 使用serial号
-            return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+            return MD5.getMD5(new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString());
         } catch (Exception exception) {
             //serial需要一个初始化
             serial = "serial"; // 随便一个初始化
         }
         //使用硬件信息拼凑出来的15位号码
-        Conet.imei = new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
+        Conet.imei = MD5.getMD5(new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString());
         return Conet.imei;
     }
 
