@@ -1,0 +1,59 @@
+<resources>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="android:Theme.Light">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="Permission" />
+
+    <style name="Permission.Theme" />
+
+    <style name="Permission.Theme.Activity">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="Permission.Theme.Activity.Transparent">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Permission.Theme.Dialog" parent="android:Theme.Holo.Dialog.NoActionBar" />
+
+    <style name="Permission.Theme.Dialog.Wait">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@drawable/permission_shape_wait_background</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="Permission.Theme.Dialog.Transparent">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="Permission.Widget" />
+
+    <style name="Permission.Widget.Progress" parent="@android:style/Widget.Holo.ProgressBar" />
+
+    <style name="Permission.Widget.Progress.Wait">
+        <item name="android:indeterminateOnly">true</item>
+    </style>
+
+    <style name="Permission.WrapContent">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="Permission.MatchParent">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+</resources>

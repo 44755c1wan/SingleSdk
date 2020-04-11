@@ -1,0 +1,23 @@
+apply plugin: 'com.android.application'
+
+android {
+    useLibrary'org.apache.http.legacy'
+
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(path: ':sdklib')
+//    implementation 'com.github.dongyonghui:QtsdkSingle:2.1'
+
+}
