@@ -13,7 +13,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.qt.ld.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
     }
 
     public void onClick(View view) {
