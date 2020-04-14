@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    useLibrary'org.apache.http.legacy'
+    useLibrary 'org.apache.http.legacy'
 
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -17,7 +17,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-//    implementation project(path: ':sdklib')
+    implementation project(path: ':sdklib')
     //    implementation 'com.github.44755c1wan:SingleSdk:1.3'
-    implementation files('libs/sdk_single_V1.1.jar')
 }

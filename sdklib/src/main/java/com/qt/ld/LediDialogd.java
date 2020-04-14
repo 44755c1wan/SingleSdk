@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.FileProvider;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -23,8 +24,6 @@ import android.view.Display;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-
-import androidx.core.content.FileProvider;
 
 import com.ledi.floatwindow.net.HttpUtilq;
 import com.ledi.util.Conetq;

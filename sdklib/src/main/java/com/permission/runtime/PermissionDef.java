@@ -15,7 +15,8 @@
  */
 package com.permission.runtime;
 
-import androidx.annotation.StringDef;
+
+import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
