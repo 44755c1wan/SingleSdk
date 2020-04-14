@@ -13,6 +13,10 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -24,3 +28,21 @@ dependencies {
     implementation files('libs/okhttp-3.6.0.jar')
     implementation files('libs/okio-1.11.0.jar')
 }
+
+def _BASENAME = "sdk_single";
+def _VERSION = "_V1.1";
+def _DestinationPath = "build"; //生成jar包的位置
+def zipFile = file('build/intermediates/packaged-classes/release/classes.jar'); //待打包文件位置
+
+task deleteBuild(type:Delete){
+    delete _DestinationPath + _BASENAME + _VERSION + ".jar"
+}
+
+task makeJar(type:Jar){
+    from zipTree(zipFile)
+    from fileTree(dir:'src/main',includes:['assets/**','libs/**']) //将assets目录打入jar包
+    baseName = _BASENAME + _VERSION
+    destinationDir = file(_DestinationPath)
+}
+
+makeJar.dependsOn(deleteBuild, build)
