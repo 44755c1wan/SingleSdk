@@ -1,8 +1,5 @@
 package com.ledi.pays;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -32,7 +29,6 @@ public class HttpUtils {
 
  
   private static final String URL_PARAM_CONNECT_FLAG = "&";
-  private static Log log = LogFactory.getLog(HttpUtils.class);
 
   private HttpUtils() {
   }
@@ -52,7 +48,6 @@ public class HttpUtils {
     } else {
       strtTotalURL = strUrl + "&" + getUrl(map);
     }
-    log.debug("strtTotalURL:" + strtTotalURL);
     URL url = new URL(strtTotalURL);
     HttpURLConnection con = (HttpURLConnection) url.openConnection();
     con.setUseCaches(false);

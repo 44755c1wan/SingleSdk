@@ -51,7 +51,7 @@ import com.ledi.bean.User;
 import com.ledi.biz.FatherBiz;
 import com.ledi.biz.UserDao;
 import com.permission.Action;
-import com.permission.AndPermission;
+import com.permission.checker.DoubleChecker;
 import com.permission.runtime.Permission;
 
 import org.json.JSONException;
@@ -83,6 +83,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Util {
+    public static final DoubleChecker STRICT_CHECKER = new DoubleChecker();
     // 一键注册截图用
     static SimpleDateFormat df = new SimpleDateFormat("hh_mm_ss");// 日期格式
     static Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
@@ -459,9 +460,9 @@ public class Util {
 
         TelephonyManager tm = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        if (AndPermission.hasPermissions(context, new String[]{
+        if (STRICT_CHECKER.hasPermission(context, new String[]{
                 Manifest.permission.READ_PHONE_STATE
-                , Manifest.permission.READ_SMS, Manifest.permission.READ_PHONE_NUMBERS
+                , Manifest.permission.READ_SMS, "android.permission.READ_PHONE_NUMBERS"
         })) {
             Conet.imei = tm.getDeviceId();
             Conet.imei = tm.getLine1Number();
@@ -1096,37 +1097,23 @@ public class Util {
     }
 
     // 获取手机号后缓存起来
+    @SuppressLint({"MissingPermission", "HardwareIds"})
     public static void initPhoneNumber(final SharedPreferences userpdf,
                                        final Context context) {
         Conet.phonenumber = userpdf.getString("phone", "");
         if (!TextUtils.isEmpty(Conet.phonenumber)) {
-
-
-            AndPermission.with(context)
-                    .runtime()
-                    .permission(Permission.READ_PHONE_STATE)
-                    .onGranted(new Action<List<String>>() {
-                        @SuppressLint("MissingPermission")
-                        @Override
-                        public void onAction(List<String> permissions) {
-                            final TelephonyManager telephonyManager = (TelephonyManager) context
-                                    .getSystemService(Context.TELEPHONY_SERVICE);
-                            Conet.phonenumber = telephonyManager.getLine1Number();
-                            if (null != Conet.phonenumber) {
-                                Editor editor = userpdf.edit();
-                                editor.putString("phone", Conet.phonenumber);
-                                editor.apply();
-                            }
-                        }
-                    })
-                    .onDenied(new Action<List<String>>() {
-                        @Override
-                        public void onAction(List<String> permissions) {
-                            Toast.makeText(context, "读取手机号失败", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .start();
-
+            if (STRICT_CHECKER.hasPermission(context, Permission.READ_PHONE_NUMBERS)) {
+                TelephonyManager telephonyManager = (TelephonyManager) context
+                        .getSystemService(Context.TELEPHONY_SERVICE);
+                if (null != telephonyManager) {
+                    Conet.phonenumber = telephonyManager.getLine1Number();
+                    if (null != Conet.phonenumber) {
+                        Editor editor = userpdf.edit();
+                        editor.putString("phone", Conet.phonenumber);
+                        editor.commit();
+                    }
+                }
+            }
         }
     }
 

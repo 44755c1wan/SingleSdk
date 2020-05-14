@@ -33,10 +33,6 @@ class PhoneStateReadTest implements PermissionTest {
     public boolean test() throws Throwable {
         PackageManager packageManager = mContext.getPackageManager();
         if (!packageManager.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)) return true;
-
-//        TelephonyManager telephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
-//        if (Build.VERSION.SDK_INT < 29) telephonyManager.getDeviceId();
-//        else telephonyManager.getDeviceSoftwareVersion();
         return true;
     }
 }

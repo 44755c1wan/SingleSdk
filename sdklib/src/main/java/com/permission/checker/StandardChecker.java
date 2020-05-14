@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public final class StandardChecker implements PermissionChecker {
 
     @Override
     public boolean hasPermission(Context context, List<String> permissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true;
+        if (Build.VERSION.SDK_INT < 23) return true;
 
         AppOpsManager opsManager = null;
         for (String permission : permissions) {
@@ -50,17 +51,26 @@ public final class StandardChecker implements PermissionChecker {
             if (result == PackageManager.PERMISSION_DENIED) {
                 return false;
             }
+            try {
+                Class appOpsC = Class.forName("android.app.AppOpsManager");
+                Method method = appOpsC.getMethod("permissionToOp", String.class);
+                Method checkOpNoThrow = appOpsC.getMethod("checkOpNoThrow", String.class, int.class, String.class);
+                String op = (String) method.invoke(appOpsC, permission);
+                if (TextUtils.isEmpty(op)) {
+                    continue;
+                }
 
-            String op = AppOpsManager.permissionToOp(permission);
-            if (TextUtils.isEmpty(op)) {
-                continue;
+                if (opsManager == null)
+                    opsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+                result = (Integer) checkOpNoThrow.invoke(opsManager, op, android.os.Process.myUid(), context.getPackageName());
+                if (result != AppOpsManager.MODE_ALLOWED && result != MODE_ASK && result != MODE_COMPAT) {
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            if (opsManager == null) opsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            result = opsManager.checkOpNoThrow(op, android.os.Process.myUid(), context.getPackageName());
-            if (result != AppOpsManager.MODE_ALLOWED && result != MODE_ASK && result != MODE_COMPAT) {
-                return false;
-            }
+
         }
         return true;
     }

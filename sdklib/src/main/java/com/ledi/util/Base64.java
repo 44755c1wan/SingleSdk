@@ -846,7 +846,7 @@ public class Base64 {
 	 * @since 2.0
 	 */
 	public static String encodeObject(java.io.Serializable serializableObject,
-			int options) throws java.io.IOException {
+                                      int options) throws java.io.IOException {
 
 		if (serializableObject == null) {
 			throw new NullPointerException("Cannot serialize a null object.");
@@ -1057,7 +1057,7 @@ public class Base64 {
 	 * @since 2.0
 	 */
 	public static String encodeBytes(byte[] source, int off, int len,
-			int options) throws java.io.IOException {
+                                     int options) throws java.io.IOException {
 		byte[] encoded = encodeBytesToBytes(source, off, len, options);
 
 		// Return value according to relevant encoding.
@@ -1613,8 +1613,8 @@ public class Base64 {
 	 * @since 2.3.4
 	 */
 	public static Object decodeToObject(String encodedObject, int options,
-			final ClassLoader loader) throws java.io.IOException,
-			ClassNotFoundException {
+                                        final ClassLoader loader) throws java.io.IOException,
+            ClassNotFoundException {
 
 		// Decode and gunzip if necessary
 		byte[] objBytes = decode(encodedObject, options);

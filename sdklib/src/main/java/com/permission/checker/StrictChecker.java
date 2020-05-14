@@ -33,7 +33,7 @@ public final class StrictChecker implements PermissionChecker {
 
     @Override
     public boolean hasPermission(Context context, String... permissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return true;
+        if (Build.VERSION.SDK_INT < 21) return true;
 
         for (String permission : permissions) {
             if (!hasPermission(context, permission)) {
@@ -45,7 +45,7 @@ public final class StrictChecker implements PermissionChecker {
 
     @Override
     public boolean hasPermission(Context context, List<String> permissions) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return true;
+        if (Build.VERSION.SDK_INT < 21) return true;
 
         for (String permission : permissions) {
             if (!hasPermission(context, permission)) {
@@ -57,55 +57,52 @@ public final class StrictChecker implements PermissionChecker {
 
     private boolean hasPermission(Context context, String permission) {
         try {
-            switch (permission) {
-                case Permission.READ_CALENDAR:
-                    return checkReadCalendar(context);
-                case Permission.WRITE_CALENDAR:
-                    return checkWriteCalendar(context);
-                case Permission.CAMERA:
-                    return checkCamera(context);
-                case Permission.READ_CONTACTS:
-                    return checkReadContacts(context);
-                case Permission.WRITE_CONTACTS:
-                    return checkWriteContacts(context);
-                case Permission.GET_ACCOUNTS:
-                    return true;
-                case Permission.ACCESS_COARSE_LOCATION:
-                    return checkCoarseLocation(context);
-                case Permission.ACCESS_FINE_LOCATION:
-                    return checkFineLocation(context);
-                case Permission.RECORD_AUDIO:
-                    return checkRecordAudio(context);
-                case Permission.READ_PHONE_STATE:
-                    return checkReadPhoneState(context);
-                case Permission.CALL_PHONE:
-                    return true;
-                case Permission.READ_CALL_LOG:
-                    return checkReadCallLog(context);
-                case Permission.WRITE_CALL_LOG:
-                    return checkWriteCallLog(context);
-                case Permission.ADD_VOICEMAIL:
-                    return true;
-                case Permission.USE_SIP:
-                    return checkSip(context);
-                case Permission.PROCESS_OUTGOING_CALLS:
-                    return true;
-                case Permission.BODY_SENSORS:
-                    return checkSensorHeart(context);
-                case Permission.ACTIVITY_RECOGNITION:
-                    return checkSensorActivity(context);
-                case Permission.SEND_SMS:
-                case Permission.RECEIVE_MMS:
-                    return true;
-                case Permission.READ_SMS:
-                    return checkReadSms(context);
-                case Permission.RECEIVE_WAP_PUSH:
-                case Permission.RECEIVE_SMS:
-                    return true;
-                case Permission.READ_EXTERNAL_STORAGE:
-                    return checkReadStorage();
-                case Permission.WRITE_EXTERNAL_STORAGE:
-                    return checkWriteStorage();
+            if (Permission.READ_CALENDAR.equals(permission)) {
+                return checkReadCalendar(context);
+            } else if (Permission.WRITE_CALENDAR.equals(permission)) {
+                return checkWriteCalendar(context);
+            } else if (Permission.CAMERA.equals(permission)) {
+                return checkCamera(context);
+            } else if (Permission.READ_CONTACTS.equals(permission)) {
+                return checkReadContacts(context);
+            } else if (Permission.WRITE_CONTACTS.equals(permission)) {
+                return checkWriteContacts(context);
+            } else if (Permission.GET_ACCOUNTS.equals(permission)) {
+                return true;
+            } else if (Permission.ACCESS_COARSE_LOCATION.equals(permission)) {
+                return checkCoarseLocation(context);
+            } else if (Permission.ACCESS_FINE_LOCATION.equals(permission)) {
+                return checkFineLocation(context);
+            } else if (Permission.RECORD_AUDIO.equals(permission)) {
+                return checkRecordAudio(context);
+            } else if (Permission.READ_PHONE_STATE.equals(permission)) {
+                return checkReadPhoneState(context);
+            } else if (Permission.CALL_PHONE.equals(permission)) {
+                return true;
+            } else if (Permission.READ_CALL_LOG.equals(permission)) {
+                return checkReadCallLog(context);
+            } else if (Permission.WRITE_CALL_LOG.equals(permission)) {
+                return checkWriteCallLog(context);
+            } else if (Permission.ADD_VOICEMAIL.equals(permission)) {
+                return true;
+            } else if (Permission.USE_SIP.equals(permission)) {
+                return checkSip(context);
+            } else if (Permission.PROCESS_OUTGOING_CALLS.equals(permission)) {
+                return true;
+            } else if (Permission.BODY_SENSORS.equals(permission)) {
+                return checkSensorHeart(context);
+            } else if (Permission.ACTIVITY_RECOGNITION.equals(permission)) {
+                return checkSensorActivity(context);
+            } else if (Permission.SEND_SMS.equals(permission) || Permission.RECEIVE_MMS.equals(permission)) {
+                return true;
+            } else if (Permission.READ_SMS.equals(permission)) {
+                return checkReadSms(context);
+            } else if (Permission.RECEIVE_WAP_PUSH.equals(permission) || Permission.RECEIVE_SMS.equals(permission)) {
+                return true;
+            } else if (Permission.READ_EXTERNAL_STORAGE.equals(permission)) {
+                return checkReadStorage();
+            } else if (Permission.WRITE_EXTERNAL_STORAGE.equals(permission)) {
+                return checkWriteStorage();
             }
         } catch (Throwable e) {
             return false;

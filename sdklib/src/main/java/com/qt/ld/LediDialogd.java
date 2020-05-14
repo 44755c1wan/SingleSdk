@@ -532,7 +532,6 @@ public class LediDialogd {
 
         @Override
         protected void onCancelled() {
-            // TODO Auto-generated method stub
             super.onCancelled();
         }
 

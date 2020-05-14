@@ -37,12 +37,12 @@ class SensorHeartTest implements PermissionTest {
     public boolean test() throws Throwable {
         SensorManager sensorManager = (SensorManager)mContext.getSystemService(Context.SENSOR_SERVICE);
         try {
-            Sensor heartRateSensor = sensorManager.getDefaultSensor(Sensor.TYPE_HEART_RATE);
+            Sensor heartRateSensor = sensorManager.getDefaultSensor(21);
             sensorManager.registerListener(SENSOR_EVENT_LISTENER, heartRateSensor, 3);
             sensorManager.unregisterListener(SENSOR_EVENT_LISTENER, heartRateSensor);
         } catch (Throwable e) {
             PackageManager packageManager = mContext.getPackageManager();
-            return !packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_HEART_RATE);
+            return !packageManager.hasSystemFeature("android.hardware.sensor.heartrate");
         }
         return true;
     }
