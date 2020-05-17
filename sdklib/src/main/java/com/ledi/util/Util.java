@@ -1,6 +1,5 @@
 package com.ledi.util;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -50,7 +49,6 @@ import android.widget.Toast;
 import com.ledi.bean.User;
 import com.ledi.biz.FatherBiz;
 import com.ledi.biz.UserDao;
-import com.permission.Action;
 import com.permission.checker.DoubleChecker;
 import com.permission.runtime.Permission;
 
@@ -76,7 +74,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -114,10 +111,7 @@ public class Util {
         Conet.imei = pfData.getString("imei", "");
 
         if (TextUtils.isEmpty(Conet.imei)) {
-            TelephonyManager tm = (TelephonyManager) context
-                    .getSystemService(Context.TELEPHONY_SERVICE);
             Conet.imei = getImei(context);
-            // Conet.imei=tm.getLine1Number();
         }
         Conet.version = Util.getXmlData(context, "Version"); // 获取版本号
         Util.initPhoneNumber(pfData, context);
@@ -446,30 +440,21 @@ public class Util {
      */
     @SuppressLint("MissingPermission")
     public static String getImei(Context context) {
-//		Conet.imei = pfData.getString("imei", "");
-//
-//		if (Conet.imei.equals("")) {
-//			TelephonyManager tm = (TelephonyManager) context
-//					.getSystemService(Context.TELEPHONY_SERVICE);
-//			Conet.imei = tm.getDeviceId();
-//			// Conet.imei=tm.getLine1Number();
-//		}
-        if (!TextUtils.isEmpty(Conet.imei)) {
-            return Conet.imei;
+        String imei = null;
+        if (Util.STRICT_CHECKER.hasPermission(context, Permission.READ_PHONE_STATE)) {
+            TelephonyManager telephonyManager = (TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            if (null != telephonyManager) {
+                imei = telephonyManager.getDeviceId();
+            }
         }
-
-        TelephonyManager tm = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        if (STRICT_CHECKER.hasPermission(context, new String[]{
-                Manifest.permission.READ_PHONE_STATE
-                , Manifest.permission.READ_SMS, "android.permission.READ_PHONE_NUMBERS"
-        })) {
-            Conet.imei = tm.getDeviceId();
-            Conet.imei = tm.getLine1Number();
-            return Conet.imei;
+        if (TextUtils.isEmpty(imei)) {
+            imei = getMyDeviceId();
         }
+        return imei;
+    }
 
-
+    private static String getMyDeviceId() {
         String serial;
         String m_szDevIDShort = "35" +
                 Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
@@ -494,9 +479,7 @@ public class Util {
             //serial需要一个初始化
             serial = "serial"; // 随便一个初始化
         }
-        //使用硬件信息拼凑出来的15位号码
-        Conet.imei = MD5.getMD5(new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString());
-        return Conet.imei;
+        return MD5.getMD5(new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString());
     }
 
     /**
